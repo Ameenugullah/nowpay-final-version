@@ -32,7 +32,7 @@ export const CURRENT_USER = {
   bank:       'Guaranty Trust Bank',
   accountNo:  '0123456789',
   nowpayId:   '@abdulmalik.np',
-  avatar:     '/images/profile.jpg',
+  avatar:     '',
 };
 
 // ── NIGERIAN BANKS ─────────────────────────────────────────
@@ -85,10 +85,10 @@ export const INITIAL_TRANSACTIONS = [
 
 // ── INITIAL RECIPIENTS ─────────────────────────────────────
 export const INITIAL_RECIPIENTS = [
-  { id:'rec1', name:'Yusuf Sale',      acct:'0123456789', bank:'GTBank',      img:'/images/user1.jpg' },
-  { id:'rec2', name:"Buhari Rabi'u",   acct:'0987654321', bank:'Access Bank', img:'/images/user2.jpg' },
-  { id:'rec3', name:"Naja'atu Aminu",  acct:'0567891234', bank:'Zenith Bank', img:'/images/user3.jpg' },
-  { id:'rec4', name:'Zayyad Mansur',   acct:'0412345678', bank:'First Bank',  img:'/images/user4.jpg' },
+  { id:'rec1', name:'Yusuf Sale',      acct:'0123456789', bank:'GTBank',      img:'' },
+  { id:'rec2', name:"Buhari Rabi'u",   acct:'0987654321', bank:'Access Bank', img:'' },
+  { id:'rec3', name:"Naja'atu Aminu",  acct:'0567891234', bank:'Zenith Bank', img:'' },
+  { id:'rec4', name:'Zayyad Mansur',   acct:'0412345678', bank:'First Bank',  img:'' },
   { id:'rec5', name:'Lukman Aminu',    acct:'0312345678', bank:'UBA',         img:'' },
 ];
 
