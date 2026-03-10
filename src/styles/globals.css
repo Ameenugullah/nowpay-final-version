@@ -1,0 +1,247 @@
+/* ══════════════════════════════════════════════════════════
+   NowPay Wallet — globals.css v3.0
+   Brand token system · Outfit + JetBrains Mono
+   Maintained color palette from original v2.1
+══════════════════════════════════════════════════════════ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Google Fonts backup import */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ── THEME TOKENS ───────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg:          #070B14;
+  --surface:     #0D1321;
+  --card:        #111827;
+  --card-h:      #192136;
+  --border:      #1E2D45;
+  --border-s:    #162034;
+  --primary:     #4E7CF6;
+  --primary-gl:  rgba(78, 124, 246, 0.18);
+  --primary-dk:  #2B56D4;
+  --teal:        #2DD4BF;
+  --gold:        #F6C94E;
+  --red:         #F87171;
+  --green:       #34D399;
+  --text:        #E8EDF8;
+  --text-s:      #7A8BAD;
+  --text-m:      #364560;
+  --sh:          0 4px 20px rgba(0, 0, 0, 0.5);
+  --sh-lg:       0 16px 48px rgba(0, 0, 0, 0.6);
+  --sh-primary:  0 6px 20px rgba(78, 124, 246, 0.35);
+  --r:           14px;
+  --r-sm:        10px;
+  --r-lg:        20px;
+}
+
+[data-theme="light"] {
+  --bg:          #EEF2FF;
+  --surface:     #FFFFFF;
+  --card:        #FFFFFF;
+  --card-h:      #F3F6FF;
+  --border:      #D0D9F0;
+  --border-s:    #E4EAFF;
+  --primary:     #3B6CF5;
+  --primary-gl:  rgba(59, 108, 245, 0.12);
+  --primary-dk:  #1E4ED8;
+  --teal:        #0D9488;
+  --gold:        #D97706;
+  --red:         #EF4444;
+  --green:       #10B981;
+  --text:        #0D1526;
+  --text-s:      #55647E;
+  --text-m:      #A0AABE;
+  --sh:          0 2px 12px rgba(0, 0, 0, 0.08);
+  --sh-lg:       0 12px 40px rgba(0, 0, 0, 0.12);
+  --sh-primary:  0 6px 20px rgba(59, 108, 245, 0.22);
+}
+
+/* ── RESET & BASE ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+button, input, select, textarea { font-family: inherit; outline: none; }
+a { text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+/* ── SCROLLBAR ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-m); }
+::selection { background: var(--primary); color: #fff; }
+
+/* ── TYPOGRAPHY ─────────────────────────────────────────── */
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── LAYOUT UTILITIES ───────────────────────────────────── */
+.page-enter { animation: fadeUp 0.3s ease both; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: scale(0.93) translateY(14px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(14px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes pulseRing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.3); }
+  50%       { box-shadow: 0 0 0 14px rgba(52, 211, 153, 0); }
+}
+
+/* ── COMPONENT LAYER ────────────────────────────────────── */
+@layer components {
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-[var(--r-sm)]
+           font-semibold text-sm text-white transition-all duration-200 cursor-pointer;
+    background: var(--primary);
+    box-shadow: var(--sh-primary);
+  }
+  .btn-primary:hover {
+    background: var(--primary-dk);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(78, 124, 246, 0.45);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-[var(--r-sm)]
+           font-semibold text-sm transition-all duration-200 cursor-pointer;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-s);
+  }
+  .btn-ghost:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-[10px] rounded-[var(--r-sm)]
+           font-semibold text-sm transition-all duration-200 cursor-pointer;
+    background: rgba(248, 113, 113, 0.1);
+    border: 1.5px solid rgba(248, 113, 113, 0.3);
+    color: var(--red);
+  }
+  .btn-danger:hover {
+    background: rgba(248, 113, 113, 0.18);
+    border-color: var(--red);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-lg);
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.3s;
+  }
+  .card:hover { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-gl); }
+  .card-static {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-lg);
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  /* Form inputs */
+  .input-field {
+    @apply w-full text-sm font-normal rounded-[var(--r-sm)] transition-all duration-200;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    padding: 12px 14px;
+  }
+  .input-field::placeholder { color: var(--text-m); }
+  .input-field:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-gl);
+  }
+
+  .select-field {
+    @apply w-full text-sm font-normal rounded-[var(--r-sm)] transition-all duration-200 appearance-none cursor-pointer;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    padding: 12px 36px 12px 14px;
+  }
+  .select-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-gl); }
+
+  /* Badges */
+  .badge-green  { @apply text-xs font-bold px-2 py-0.5 rounded-full; background:rgba(52,211,153,.12); color:var(--green); }
+  .badge-red    { @apply text-xs font-bold px-2 py-0.5 rounded-full; background:rgba(248,113,113,.12); color:var(--red); }
+  .badge-gold   { @apply text-xs font-bold px-2 py-0.5 rounded-full; background:rgba(246,201,78,.12); color:var(--gold); }
+  .badge-blue   { @apply text-xs font-bold px-2 py-0.5 rounded-full; background:var(--primary-gl); color:var(--primary); }
+  .badge-muted  { @apply text-xs font-bold px-2 py-0.5 rounded-full; background:rgba(100,120,150,.1); color:var(--text-s); }
+
+  /* Nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-[11px] rounded-[var(--r-sm)]
+           text-sm font-medium transition-all duration-150 cursor-pointer w-full text-left;
+    color: var(--text-s);
+    background: transparent;
+    border: none;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--card-h); color: var(--text); }
+  .nav-item.active { background: var(--primary-gl); color: var(--primary); font-weight: 600; }
+
+  /* Toggle switch */
+  .toggle-track {
+    @apply relative inline-block w-11 h-6 rounded-full transition-colors duration-300 cursor-pointer;
+    background: var(--border);
+  }
+  .toggle-track.on { background: var(--primary); }
+  .toggle-thumb {
+    @apply absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-300;
+  }
+  .toggle-track.on .toggle-thumb { transform: translateX(20px); }
+
+  /* Section header */
+  .section-header {
+    @apply flex items-center justify-between mb-3;
+  }
+  .section-title {
+    @apply text-[15px] font-bold;
+    color: var(--text);
+  }
+  .link-btn {
+    @apply text-[13px] font-medium transition-opacity duration-150;
+    color: var(--primary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .link-btn:hover { opacity: 0.7; }
+}
