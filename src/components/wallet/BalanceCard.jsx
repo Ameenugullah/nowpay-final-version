@@ -28,7 +28,7 @@ export default function BalanceCard({ balance, onSend, onReceive }) {
   );
 
   return (
-    <div style={{
+    <div className="balance-card-root" style={{
       position: 'relative',
       background: 'linear-gradient(135deg, #1730C8 0%, #2944D4 50%, #4E7CF6 100%)',
       borderRadius: 'var(--r-lg)',
@@ -94,13 +94,15 @@ export default function BalanceCard({ balance, onSend, onReceive }) {
       </div>
 
       {/* Amount */}
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 3, position: 'relative', zIndex: 1 }}>
-        <span style={{ fontSize: 24, fontWeight: 600, color: 'rgba(255,255,255,.7)' }}>₦</span>
-        <span style={{
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 3, position: 'relative', zIndex: 1, flexWrap: 'nowrap', overflow: 'hidden' }}>
+        <span style={{ fontSize: 24, fontWeight: 600, color: 'rgba(255,255,255,.7)', flexShrink: 0 }}>₦</span>
+        <span className="balance-amount" style={{
           fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 'clamp(24px, 3.5vw, 40px)',
+          fontSize: 'clamp(20px, 5vw, 40px)',
           fontWeight: 600, color: '#fff',
           letterSpacing: -1, lineHeight: 1,
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          minWidth: 0,
         }}>
           {hidden ? '••••••••' : fmtNGN(balance)}
         </span>
@@ -120,6 +122,15 @@ export default function BalanceCard({ balance, onSend, onReceive }) {
         <ActionBtn icon={RiDownloadLine}  label="Receive" onClick={onReceive} />
         <ActionBtn icon={RiMoreLine}      label="More"    onClick={() => {}}  />
       </div>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .balance-card-root { padding: 20px 18px !important; min-height: 190px !important; }
+        }
+        @media (max-width: 360px) {
+          .balance-card-root { padding: 16px 14px !important; }
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,9 +1,8 @@
 import { initials } from '@/utils/formatters';
 
+// Only Paystack logo is used as a provider avatar (Flutterwave/PayPal removed)
 const IMG_MAP = {
-  'paystack.png':    '/images/paystack.png',
-  'flutterwave.jpg': '/images/flutterwave.jpg',
-  'paypal.png':      '/images/paypal.png',
+  'paystack.png': '/images/paystack.png',
 };
 
 export default function Avatar({ img, name = '?', size = 36, radius = 10, className = '' }) {

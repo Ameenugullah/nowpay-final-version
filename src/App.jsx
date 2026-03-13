@@ -8,11 +8,23 @@ import SendMoney    from '@/pages/SendMoney';
 import Receive      from '@/pages/Receive';
 import Settings     from '@/pages/Settings';
 
-const SIDEBAR_W = 244; // px — must match Sidebar component
+const SIDEBAR_W = 244;
+
+function useIsMobile() {
+  const [mobile, setMobile] = useState(() => window.innerWidth <= 640);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)');
+    const h = (e) => setMobile(e.matches);
+    mq.addEventListener('change', h);
+    return () => mq.removeEventListener('change', h);
+  }, []);
+  return mobile;
+}
 
 export default function App() {
-  const [page, setPage]       = useState('dashboard');
+  const [page, setPage]         = useState('dashboard');
   const [sideOpen, setSideOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const navigate = useCallback((p) => {
     setPage(p);
@@ -20,15 +32,12 @@ export default function App() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Close sidebar on wider screens
+  // Close sidebar when resizing to desktop
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 641px)');
-    const handler = (e) => { if (e.matches) setSideOpen(false); };
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
+    if (!isMobile) setSideOpen(false);
+  }, [isMobile]);
 
-  const pageComponents = {
+  const pages = {
     dashboard:    <Dashboard    onNav={navigate} />,
     transactions: <Transactions />,
     send:         <SendMoney />,
@@ -36,9 +45,10 @@ export default function App() {
     settings:     <Settings />,
   };
 
+  const mainLeft = isMobile ? 0 : SIDEBAR_W;
+
   return (
     <div style={{ display: 'flex', minHeight: '100dvh', background: 'var(--bg)' }}>
-      {/* Sidebar */}
       <Sidebar
         activePage={page}
         onNav={navigate}
@@ -46,51 +56,35 @@ export default function App() {
         onClose={() => setSideOpen(false)}
       />
 
-      {/* Main content area */}
-      <div
-        style={{
-          flex: 1,
-          marginLeft: SIDEBAR_W,
-          minHeight: '100dvh',
-          display: 'flex',
-          flexDirection: 'column',
-          transition: 'margin-left .28s ease',
-        }}
-        className="main-content-area"
-      >
-        {/* Topbar */}
+      <div style={{
+        flex: 1,
+        marginLeft: mainLeft,
+        minHeight: '100dvh',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'margin-left .28s ease',
+        minWidth: 0,
+        overflow: 'hidden',
+      }}>
         <TopBar
           activePage={page}
-          onMenuClick={() => setSideOpen(v => !v)}
-          sidebarWidth={SIDEBAR_W}
+          onMenuClick={() => setSideOpen((v) => !v)}
+          sidebarWidth={mainLeft}
         />
-
-        {/* Page content */}
-        <main
-          style={{ flex: 1, paddingTop: 68 }}
-          className="main-content-area"
-        >
-          {pageComponents[page]}
+        <main style={{
+          flex: 1,
+          paddingTop: 64,
+          paddingBottom: isMobile ? 70 : 0,
+          overflowX: 'hidden',
+          minWidth: 0,
+          /* iOS safe area for bottom nav */
+          paddingBottom: isMobile ? 'calc(70px + env(safe-area-inset-bottom, 0px))' : 0,
+        }}>
+          {pages[page]}
         </main>
       </div>
 
-      {/* Mobile bottom navigation */}
       <MobileNav activePage={page} onNav={navigate} />
-
-      {/* Responsive overrides */}
-      <style>{`
-        @media (max-width: 640px) {
-          .main-content-area {
-            margin-left: 0 !important;
-            padding-bottom: 64px;
-          }
-        }
-        @media (max-width: 900px) and (min-width: 641px) {
-          .main-content-area {
-            margin-left: ${SIDEBAR_W}px;
-          }
-        }
-      `}</style>
     </div>
   );
 }

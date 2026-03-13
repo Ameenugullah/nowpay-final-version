@@ -135,14 +135,15 @@ function TxDetailModal({ tx, onClose }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {rows.map(([k, v]) => (
           <div key={k} style={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
             padding: '10px 13px', background: 'var(--surface)',
-            borderRadius: 9, fontSize: 13,
+            borderRadius: 9, fontSize: 13, gap: 10, flexWrap: 'wrap',
           }}>
-            <span style={{ color: 'var(--text-s)' }}>{k}</span>
+            <span style={{ color: 'var(--text-s)', flexShrink: 0 }}>{k}</span>
             <span style={{
               fontFamily: ['Amount','Reference'].includes(k) ? "'JetBrains Mono',monospace" : undefined,
               fontWeight: 600, color: k === 'Amount' ? (credit ? 'var(--green)' : 'var(--text)') : 'var(--text)',
+              textAlign: 'right', wordBreak: 'break-all', maxWidth: '100%',
             }}>{v}</span>
           </div>
         ))}

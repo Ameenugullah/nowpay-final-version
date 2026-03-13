@@ -11,24 +11,30 @@ const initialState = {
 
 function walletReducer(state, action) {
   switch (action.type) {
+
     case 'ADD_TRANSACTION': {
       const tx = action.payload;
-      const delta = tx.type === 'credit' ? tx.amount : -tx.amount;
+      // For debits: deduct total (amount + fee). For credits: add amount.
+      const delta = tx.type === 'credit' ? tx.amount : -(tx.total || tx.amount);
       return {
         ...state,
         balance:      state.balance + delta,
         transactions: [tx, ...state.transactions],
       };
     }
-    case 'ADD_RECIPIENT':
-      return { ...state, recipients: [action.payload, ...state.recipients] };
-    case 'UPDATE_RECIPIENT':
+
+    // Update an existing transaction (e.g. pending → completed / failed)
+    case 'UPDATE_TRANSACTION':
       return {
         ...state,
-        recipients: state.recipients.map(r =>
-          r.id === action.payload.id ? { ...r, ...action.payload } : r
+        transactions: state.transactions.map((t) =>
+          t.id === action.payload.id ? { ...t, ...action.payload } : t
         ),
       };
+
+    case 'ADD_RECIPIENT':
+      return { ...state, recipients: [action.payload, ...state.recipients] };
+
     default:
       return state;
   }
@@ -37,16 +43,12 @@ function walletReducer(state, action) {
 export function WalletProvider({ children }) {
   const [state, dispatch] = useReducer(walletReducer, initialState);
 
-  const addTransaction = useCallback((tx) => {
-    dispatch({ type: 'ADD_TRANSACTION', payload: tx });
-  }, []);
-
-  const addRecipient = useCallback((r) => {
-    dispatch({ type: 'ADD_RECIPIENT', payload: r });
-  }, []);
+  const addTransaction    = useCallback((tx) => dispatch({ type: 'ADD_TRANSACTION',    payload: tx }), []);
+  const updateTransaction = useCallback((tx) => dispatch({ type: 'UPDATE_TRANSACTION', payload: tx }), []);
+  const addRecipient      = useCallback((r)  => dispatch({ type: 'ADD_RECIPIENT',      payload: r  }), []);
 
   return (
-    <WalletContext.Provider value={{ ...state, addTransaction, addRecipient }}>
+    <WalletContext.Provider value={{ ...state, addTransaction, updateTransaction, addRecipient }}>
       {children}
     </WalletContext.Provider>
   );
